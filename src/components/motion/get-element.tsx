@@ -1,4 +1,4 @@
-import { Slot, component$ } from "@qwik.dev/core";
+import { type PropsOf, Slot, component$ } from "@qwik.dev/core";
 
 export interface GetElementProps {
 	element: keyof HTMLElementTagNameMap | "svg";
@@ -6,15 +6,21 @@ export interface GetElementProps {
 	props: any;
 }
 
+export const Div = component$((props: PropsOf<"div">) => {
+	return (
+		<div ref={props.ref} {...props}>
+			<Slot />
+		</div>
+	);
+});
+
 export const GetElement = component$<GetElementProps>(
-	({ element, ref, props }) => {
+	({ element, ref, ...props }) => {
 		switch (element) {
 			case "div":
-				return (
-					<div ref={ref} {...props}>
-						<Slot />
-					</div>
-				);
+				return <Div ref={ref} {...props}>
+                    <Slot />
+                </Div>;
 			case "span":
 				return (
 					<span ref={ref} {...props}>
@@ -102,6 +108,7 @@ export const GetElement = component$<GetElementProps>(
 			case "option":
 				return (
 					<option ref={ref} {...props}>
+						{/* @ts-ignore */}
 						<Slot />
 					</option>
 				);
@@ -226,17 +233,9 @@ export const GetElement = component$<GetElementProps>(
 					</meter>
 				);
 			case "iframe":
-				return (
-					<iframe ref={ref} {...props}>
-						<Slot />
-					</iframe>
-				);
+				return <iframe ref={ref} {...props} />;
 			case "embed":
-				return (
-					<embed ref={ref} {...props}>
-						<Slot />
-					</embed>
-				);
+				return <embed ref={ref} {...props} />;
 			case "object":
 				return (
 					<object ref={ref} {...props}>
@@ -250,17 +249,9 @@ export const GetElement = component$<GetElementProps>(
 					</picture>
 				);
 			case "source":
-				return (
-					<source ref={ref} {...props}>
-						<Slot />
-					</source>
-				);
+				return <source ref={ref} {...props} />;
 			case "track":
-				return (
-					<track ref={ref} {...props}>
-						<Slot />
-					</track>
-				);
+				return <track ref={ref} {...props} />;
 			case "map":
 				return (
 					<map ref={ref} {...props}>
@@ -268,11 +259,7 @@ export const GetElement = component$<GetElementProps>(
 					</map>
 				);
 			case "area":
-				return (
-					<area ref={ref} {...props}>
-						<Slot />
-					</area>
-				);
+				return <area ref={ref} {...props} />;
 			case "th":
 				return (
 					<th ref={ref} {...props}>
@@ -299,9 +286,7 @@ export const GetElement = component$<GetElementProps>(
 				);
 			case "col":
 				return (
-					<col ref={ref} {...props}>
-						<Slot />
-					</col>
+					<col ref={ref} {...props} />
 				);
 			case "colgroup":
 				return (

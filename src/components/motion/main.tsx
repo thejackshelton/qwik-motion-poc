@@ -1,3 +1,4 @@
+import { type Component, type PropsOf, type QwikIntrinsicElements } from "@qwik.dev/core";
 import {
 	createMotionA,
 	createMotionArea,
@@ -60,9 +61,14 @@ import {
 	createMotionUl,
 	createMotionVideo,
 } from "./create-element";
+import type { AnimatedMotionProps } from "./animate";
 
-export const motion: Record<string, unknown> = {
-	div: createMotionDiv,
+type MotionComponents = {
+    [K in keyof QwikIntrinsicElements]: Component<Omit<AnimatedMotionProps, "element">>
+};
+
+export const motion: Partial<MotionComponents> = {
+	div: createMotionDiv as Component<AnimatedMotionProps> & PropsOf<"div">,
 	p: createMotionP,
 	span: createMotionSpan,
 	a: createMotionA,

@@ -2,12 +2,9 @@ import { component$ } from "@qwik.dev/core";
 import {
   QwikRouterProvider,
   RouterOutlet,
-  ServiceWorkerRegister,
 } from "@qwik.dev/router";
 import { RouterHead } from "./components/router-head/router-head";
 import { isDev } from "@qwik.dev/core";
-
-import "./global.css";
 
 export default component$(() => {
   /**
@@ -31,7 +28,6 @@ export default component$(() => {
       </head>
       <body lang="en">
         <RouterOutlet />
-        {!isDev && <ServiceWorkerRegister />}
       </body>
     </QwikRouterProvider>
   );

@@ -17,7 +17,6 @@ export default component$(() => {
 					duration: 0.5,
 					easing: "ease-in-out",
 					repeat: 0,
-					direction: "alternate",
 				}}
 			>
 				hey

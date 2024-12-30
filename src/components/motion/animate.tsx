@@ -1,6 +1,5 @@
-import { component$, Slot, useSignal, useVisibleTask$ } from "@qwik.dev/core";
+import { component$, Slot, useId, useSignal } from "@qwik.dev/core";
 import {
-	animate,
 	type DOMKeyframesDefinition,
 	type DynamicAnimationOptions,
 } from "motion";
@@ -15,16 +14,30 @@ export interface AnimatedMotionProps {
 export const AnimatedMotion = component$<AnimatedMotionProps>(
 	({ element, animate: animateProps, options, ...attributes }) => {
 		const ref = useSignal<Element>();
-
-		useVisibleTask$(() => {
-			if (!ref.value) return;
-			animate(ref.value, animateProps, options);
-		});
+		const localId = useId();
 
 		return (
-			<GetElement element={element} ref={ref} props={attributes}>
-				<Slot />
-			</GetElement>
+			<>
+				<GetElement
+					element={element}
+					ref={ref}
+					props={attributes}
+					data-local-id={localId}
+				>
+					<Slot />
+				</GetElement>
+				<script
+					dangerouslySetInnerHTML={`
+                        (async () => {
+                            const element = document.querySelector('[data-local-id="${localId}"]');
+                            if (element) {
+                                const { animate } = await import('/node_modules/.vite/deps/motion.js');
+                                animate(element, ${JSON.stringify(animateProps)}, ${JSON.stringify(options)});
+                            }
+                        })();
+                    `}
+				/>
+			</>
 		);
 	},
 );
